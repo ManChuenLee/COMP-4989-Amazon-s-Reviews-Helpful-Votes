@@ -20,7 +20,7 @@ def bag_of_words(raw_data):
     return x_train, x_test, y_train, y_test
 
 
-def bag_of_words_demo(text):
+def bag_of_words_demo(raw_data):
     """
     This function process the review texts via Bag-of_Words
     :param raw_data: The raw data from the dataset
@@ -28,5 +28,7 @@ def bag_of_words_demo(text):
     """
     # new_data = preprocess_data(raw_data)
     vectorizer = CountVectorizer(analyzer='word')
-    result = vectorizer.fit_transform(text)
-    return result
+    x_train = vectorizer.fit_transform(raw_data)
+    x_test = vectorizer.transform(raw_data)
+
+    return x_train, x_test
