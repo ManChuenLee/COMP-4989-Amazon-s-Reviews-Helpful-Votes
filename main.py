@@ -1,8 +1,9 @@
 import pandas as pd
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from models.regression_models import random_forest_model, logistic_regression_model, svm_regression_model, \
     linear_regression_model
-from preprocess_data.bag_of_words import bag_of_words
+from preprocess_data.bag_of_words import bag_of_words, bag_of_words_demo
 from preprocess_data.tf_idf import tfdif
 
 
@@ -32,29 +33,29 @@ def run_models(new_x_train, new_x_test, new_y_train, new_y_test, new_number_of_l
 
     for x in range(new_number_of_loops):
         print("Running loop: " + str(x+1))
-        # svm_pred, svm_mae = svm_regression_model(new_x_train, new_y_train, new_x_test, new_y_test)
-        # linear_pred, linear_mae = linear_regression_model(new_x_train, new_y_train, new_x_test, new_y_test)
+        svm_pred, svm_mae = svm_regression_model(new_x_train, new_y_train, new_x_test, new_y_test)
+        linear_pred, linear_mae = linear_regression_model(new_x_train, new_y_train, new_x_test, new_y_test)
         rf_pred, rf_mae = random_forest_model(new_x_train, new_y_train, new_x_test, new_y_test)
         log_pred, log_mae = logistic_regression_model(new_x_train, new_y_train, new_x_test, new_y_test)
         rf_mae_list.append(rf_mae)
         log_mae_list.append(log_mae)
-        # svm_mae_list.append(svm_mae)
-        # linear_mae_list.append(linear_mae)
+        svm_mae_list.append(svm_mae)
+        linear_mae_list.append(linear_mae)
         print("Finished loop: " + str(x+1))
 
     new_avg_rf_mae = average(rf_mae_list)
     new_avg_log_mae = average(log_mae_list)
-    new_avg_svm_mae = 0
-    new_avg_linear_mae = 0
+    new_avg_svm_mae = average(svm_mae_list)
+    new_avg_linear_mae = average(linear_mae_list)
 
     return new_avg_rf_mae, new_avg_log_mae, new_avg_svm_mae, new_avg_linear_mae
 
 
 if __name__ == '__main__':
     # This is where we read the csv file to grab the data
-    data = pd.read_csv("./datasets/csv8.csv", low_memory=False)
+    data = pd.read_csv("./datasets/preprocessed_appliance_amazon.csv", low_memory=False)[0:2000]
 
-    number_of_loops = 1
+    number_of_loops = 5
 
     # We'll start off with Bag-of-Words:
     x_train, x_test, y_train, y_test = bag_of_words(data)
@@ -94,3 +95,44 @@ if __name__ == '__main__':
     print("Average MAE for Logistic Regression = " + str(avg_log_mae))
     print("Average MAE for SVM Regression = " + str(avg_svm_mae))
     print("Average MAE for Linear Regression = " + str(avg_linear_mae))
+
+
+    # Demonstration:
+    # Find Amazon reviews online, and create demo variables to test out our program.
+
+    # demo_1 = "Aveeno body lotion is our go to moisturizer. Lightly scented and soaks into the skin so oiliness does " \
+    #          "not last long but skin feels good. Once we get down to about 1/4 level pump stops picking up. Too much " \
+    #          "to waste so cut the container horizontally and put the sizable amount into a Tupperware unit. Lasts " \
+    #          "surprisingly long time. Good stuff. "
+    # demo_2 = "Two corners are slightly bent, which is a little disappointing, as this is a shower gift."
+    # demo_3 = "I read carefully every bad reviews before buying it so I knew that my floors were not gonna be " \
+    #          "perfectly clean after using it. After the first cleaning and despite my knowledge that it wasn’t gonna " \
+    #          "be perfect, I was deeply disappointed : I did asked myself if it wasn’t dirtier than before. I thought " \
+    #          "that iRobot couldn’t have designed a product that bad, so I tried it with washable mopping pads AND I " \
+    #          "soaked it with water just before the cleaning. This way, the result is amazing! Highly recommend it! Do " \
+    #          "not lose time with the single use mopping pads included. "
+    # # Place the demo variables into the array below followed by the number of helpful votes
+    # demo_array = [[demo_3, 71], [demo_1, 23], [demo_2, 0]]
+    # demo_df = pd.DataFrame(demo_array, columns=['reviewText', 'vote'])
+    #
+    # print("Before:")
+    # print(demo_df)
+    # for index, a in enumerate(demo_array):
+    #     demo_df.at[index, 'reviewText'] = bag_of_words_demo(demo_df.at[index, 'reviewText'])
+    #
+    # print("After:")
+    # print(demo_df)
+    # # We'll start off with Bag-of-Words:
+    # x_train, x_test, y_train, y_test = bag_of_words(data)
+    #
+    # print(x_train)
+    # print(demo_df)
+    # model = LogisticRegression()
+    # model.fit(x_train, y_train)
+    # pred = model.predict(demo_df)
+    #
+    # for index, review in enumerate(demo_array):
+    #     print("Review: " + review[0])
+    #     print("Predicted 'Helpful Votes Score: " + pred[index])
+    #     print("True 'Helpful Votes Score': " + str(review[1]))
+

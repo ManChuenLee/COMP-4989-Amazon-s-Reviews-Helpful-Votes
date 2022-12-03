@@ -13,12 +13,10 @@ def random_forest_model(x_train, y_train, x_test, y_test):
     :param y_test: a pandaframe that holds integers of people who find the reviews to be helpful
     :return: a list of predictions of how many people they find helpful and the mean absolute error.
     """
-    print("running Random Forest model")
     model = RandomForestRegressor()
     model.fit(x_train, y_train)
     pred = model.predict(x_test)
     mae = mean_absolute_error(y_test, pred)
-    print("Finished Random Forest model")
     return pred, mae
 
 
@@ -31,12 +29,10 @@ def logistic_regression_model(x_train, y_train, x_test, y_test):
     :param y_test: a pandaframe that holds integers of people who find the reviews to be helpful
     :return: a list of predictions of how many people they find helpful and the mean absolute error.
     """
-    print("running Logistic model")
     model = LogisticRegression()
     model.fit(x_train, y_train)
     pred = model.predict(x_test)
     mae = mean_absolute_error(y_test, pred)
-    print("Finished Logisted model")
     return pred, mae
 
 
@@ -49,12 +45,10 @@ def svm_regression_model(x_train, y_train, x_test, y_test):
     :param y_test: a pandaframe that holds integers of people who find the reviews to be helpful
     :return: a list of predictions of how many people they find helpful and the mean absolute error.
     """
-    print("running SVM model")
     model = svm.SVR()
     model.fit(x_train, y_train)
     pred = model.predict(x_test)
     mae = mean_absolute_error(y_test, pred)
-    print("Finished SVM model")
     return pred, mae
 
 
@@ -67,10 +61,8 @@ def linear_regression_model(x_train, y_train, x_test, y_test):
     :param y_test: a pandaframe that holds integers of people who find the reviews to be helpful
     :return: a list of predictions of how many people they find helpful and the mean absolute error.
     """
-    print("running Linear model")
     model = svm.LinearSVR()
     model.fit(x_train, y_train)
     pred = model.predict(x_test)
     mae = mean_absolute_error(y_test, pred)
-    print("Finished Linear model")
     return pred, mae
