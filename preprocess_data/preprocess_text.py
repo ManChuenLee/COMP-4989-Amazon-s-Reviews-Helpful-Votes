@@ -1,4 +1,3 @@
-import pandas as pd
 import string
 import re
 from keras_preprocessing.text import text_to_word_sequence
@@ -10,9 +9,6 @@ from nltk.stem import WordNetLemmatizer
 
 nltk.download('stopwords')
 from nltk.corpus import stopwords
-
-# This is where we read the csv file to grab the data
-data = pd.read_csv("../datasets/preprocessed_appliance_amazon.csv", low_memory=False)
 
 
 def remove_punctuation(text):
@@ -74,10 +70,8 @@ def preprocess_data(raw_data):
 
     for index, i in enumerate(preprocess_reviews['preprocess_review']):
         if len(i) == 0:
-            print("Found empty list in: " + str(index))
             preprocess_reviews.drop([index], axis=0, inplace=True)
         if len(i) == 1 and len(i[0]) == 1:
-            print("Found single letter in: " + str(index))
             preprocess_reviews.drop([index], axis=0, inplace=True)
         preprocess_reviews['preprocess_review'][index] = " ".join(i)
 
